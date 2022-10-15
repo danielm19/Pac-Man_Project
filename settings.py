@@ -11,3 +11,6 @@ class Settings():
         self.white = (255, 255, 255)
         self.green = (0, 215, 0)
         self.blue = (30, 145, 250)
+        
+        self.yellow = (250, 250, 0)
+        self.pacman_speed = 1
