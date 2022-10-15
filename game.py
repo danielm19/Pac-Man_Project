@@ -2,6 +2,8 @@ import pygame as pg
 import sys
 from settings import Settings
 from button import Button
+from pacman import Pacman
+import gamefunctions as gf
 
 class Game:
     def __init__(self):
@@ -11,8 +13,22 @@ class Game:
         self.screen = pg.display.set_mode(size=self.size)
         pg.display.set_caption("PAC-MAN")
         
+        self.pacman = Pacman(self)
+        
         
         self.play_button = Button(screen= self.screen, text= 'Play', x= self.size[0] // 2, y= 750)
+        
+    def play(self):
+        while True:
+         self.screen.fill(self.settings.black)
+         gf.check_events(settings= self.settings, pacman= self.pacman)
+         self.pacman.update()
+         pg.display.flip()
+         
+            
+    def reset(self):
+        pass
+        
         
     def start_screen(self):
         
@@ -45,14 +61,9 @@ class Game:
                     mousepos = pg.mouse.get_pos()
                     if self.play_button.rect.collidepoint(mousepos):
                         button_click = True
-                        # self.play() 
+                        self.play() 
             pg.display.update()
             
-    def reset(self):
-        pass
-    
-    def play():
-        pass
     
 def main():
     g = Game()
