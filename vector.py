@@ -40,6 +40,15 @@ class Vector:
     
     def y_val(self):
         return self.y
+    
+    def convert_tuple(self):
+        return self.x, self.y
+    
+    def convert_tuple_int(self):
+        return int(self.x), int(self.y)
+    
+    def copy(self):
+        return Vector(self.x, self.y)
 
     def __iadd__(self, other):         # v += u
         self.x += other.x
