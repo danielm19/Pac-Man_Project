@@ -3,6 +3,7 @@ import sys
 from settings import Settings
 from button import Button
 from pacman import Pacman
+from node import Nodes
 import gamefunctions as gf
 
 class Game:
@@ -13,7 +14,9 @@ class Game:
         self.screen = pg.display.set_mode(size=self.size)
         pg.display.set_caption("PAC-MAN")
         
-        self.pacman = Pacman(self)
+        self.nodes = Nodes(self)
+        self.nodes.test_nodes()
+        self.pacman = Pacman(self, self.nodes.node_list[0])
         
         
         self.play_button = Button(screen= self.screen, text= 'Play', x= self.size[0] // 2, y= 750)
@@ -21,6 +24,7 @@ class Game:
     def play(self):
         while True:
          self.screen.fill(self.settings.black)
+         self.nodes.draw()
          gf.check_events(settings= self.settings, pacman= self.pacman)
          self.pacman.update()
          pg.display.flip()
