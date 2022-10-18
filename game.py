@@ -14,18 +14,19 @@ class Game:
         self.screen = pg.display.set_mode(size=self.size)
         pg.display.set_caption("PAC-MAN")
         
-        self.nodes = Nodes(self)
-        self.nodes.test_nodes()
-        self.pacman = Pacman(self, self.nodes.node_list[0])
+        self.nodes = Nodes(self, 'maze.txt')
+        self.nodes.set_portal_node_pair((0, 17), (27, 17))
+        self.pacman = Pacman(self, self.nodes.getStartNode())
         
         
-        self.play_button = Button(screen= self.screen, text= 'Play', x= self.size[0] // 2, y= 750)
+        self.play_button = Button(screen= self.screen, text= 'Play', x= self.size[0] // 2, y= self.size[1] - 100)
         
     def play(self):
         while True:
          self.screen.fill(self.settings.black)
+         #self.screen.blit(self.settings.bg, (12,50))
          self.nodes.draw()
-         gf.check_events(settings= self.settings, pacman= self.pacman)
+         gf.check_events()
          self.pacman.update()
          pg.display.flip()
          
@@ -41,7 +42,7 @@ class Game:
         text_rect = text.get_rect()
         text_rect.center = ((self.settings.screen_width // 2, self.settings.screen_height // 10))
         
-        pac_image = pg.transform.rotozoom(pg.image.load('images/pac-man-title.png'), 0, 0.25)
+        pac_image = pg.transform.rotozoom(pg.image.load('images/pac-man-title.png'), 0, 0.2)
         pac_image_rect = pac_image.get_rect()
         pac_image_rect.center = (((self.settings.screen_width // 2) - 40, self.settings.screen_height // 9))
         

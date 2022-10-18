@@ -1,0 +1,14 @@
+maze information
+numpy.loadtxt creates a 2d array will be use to loop through the file 
+numpy array.shape[0] grabs the rows of the 2-d array
+numpy array.shape[1] grabs the cols of the 2-d array
++ means that a node is in that position of the maze (of verticies in a graph)
+. means the path to the next node (or edges in a graph)
+x means that their is empty space no node or edge)
+
+Node class information
+instead of storing the nodes in a list it is stored in a dictionary 
+in the nodes dictionary the key is the (x, y) point and value is the node itself
+dictionary used to create the graph to know which nodes are connected to each other 
+
+
