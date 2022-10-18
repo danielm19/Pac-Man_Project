@@ -49,6 +49,9 @@ class Vector:
     
     def copy(self):
         return Vector(self.x, self.y)
+    
+    def mag_sq(self):
+        return self.x ** 2 + self.y ** 2
 
     def __iadd__(self, other):         # v += u
         self.x += other.x
