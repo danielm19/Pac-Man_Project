@@ -1,6 +1,7 @@
 import pygame as pg
 from settings import Settings
 from vector import Vector
+import numpy
 
 
 
@@ -13,7 +14,8 @@ class Node:
             'UP': None,
             'DOWN': None,
             'LEFT': None,
-            'RIGHT': None
+            'RIGHT': None,
+            'PORTAL': None
         }
         
     def draw(self):
@@ -25,38 +27,96 @@ class Node:
                 pg.draw.circle(surface= self.screen, color= self.settings.node_color, center=self.pos.convert_tuple_int(), radius= 10)
 
 class Nodes:
-    def __init__(self, game):
-        self.node_list = []
+    def __init__(self, game, maze):
         self.game = game
+        self.maze = maze
+        self.settings = Settings()
+        self.nodes_dict = {} #dictionary containing all the nodes 
+        self.node_symbols = ['+', 'P', 'n']
+        self.path_symbols = ['.', 'p', '-', '|']
+        maze_data = self.readMazeFile(maze)
+        self.create_node_dict(maze_data)
+        self.setup_horizontal_nodes(maze_data)
+        self.setup_vertical_nodes(maze_data)
         
-    def test_nodes(self):
-        nodeA = Node(game= self.game, x= 80, y= 80)
-        nodeB = Node(game= self.game, x= 160, y= 80)
-        nodeC = Node(game= self.game, x= 80, y= 160)
-        nodeD = Node(game= self.game, x= 160, y= 160)
-        nodeE = Node(game= self.game, x= 208, y= 160)
-        nodeF = Node(game= self.game, x= 80, y= 320)
-        nodeG = Node(game= self.game, x= 208, y= 320)
+    def readMazeFile(self, file):
+        #dtype U1 so file will not read data as float values 
+        #returns a 2d array useful for creating the node dict
+        return numpy.loadtxt(fname= file, dtype= '<U1')
+    
+    #creates node dict keys are x, y pos and value will be nodes
+    def create_node_dict(self, mazedata, delta_x= 0, delta_y= 0):
+        #loop through the file by rows and cols
+        for row in list(range(mazedata.shape[0])):
+            for col in list(range(mazedata.shape[1])):
+                if mazedata[row][col] in self.node_symbols:
+                    x, y = self.create_key(col + delta_x, row + delta_y)
+                    self.nodes_dict[(x, y)] = Node(game= self.game, x= x, y= y)
+                    
+    def create_key(self, x, y):
+        return x * self.settings.tileWidth, y * self.settings.tileHeight
+    
+    def setup_horizontal_nodes(self, mazedata, delta_x= 0, delta_y= 0):
+        for row in list(range(mazedata.shape[0])):
+            key = None
+            for col in list(range(mazedata.shape[1])):
+                if mazedata[row][col] in self.node_symbols:
+                    if key == None:
+                        key = self.create_key(x= col + delta_x, y= row + delta_y)
+                    else:
+                        other_key = self.create_key(x= col + delta_x, y= row + delta_y)
+                        #makes the connection between left and roght nodes on the screen
+                        self.nodes_dict[key].neighbors['RIGHT'] = self.nodes_dict[other_key]
+                        self.nodes_dict[other_key].neighbors['LEFT'] = self.nodes_dict[key]
+                        key = other_key
+                        
+                elif mazedata[row][col] not in self.path_symbols:
+                    key = None
+                    
+    def setup_vertical_nodes(self, mazedata, delta_x= 0, delta_y= 0):
+        # instead ofr (i, j) it will be (j, i) eaiser to connect up and down nodes
+        vert_maze_data = mazedata.transpose()
+        for col in list(range(vert_maze_data.shape[0])):
+            key = None
+            for row in list(range(vert_maze_data.shape[1])):
+                if vert_maze_data[col][row] in self.node_symbols:
+                    if key == None:
+                        key = self.create_key(x= col + delta_x, y= row + delta_y)
+                    else:
+                        other_key = self.create_key(x= col + delta_x , y= row + delta_y)
+                        #make connection with nodes above and below each other 
+                        self.nodes_dict[key].neighbors['DOWN'] = self.nodes_dict[other_key]
+                        self.nodes_dict[other_key].neighbors['UP'] = self.nodes_dict[key]
+                        key = other_key
+                        
+                elif vert_maze_data[col][row] not in self.path_symbols:
+                    key = None
+                    
+    def getNodeFromPoint(self, xpoint, ypoint):
+        if (xpoint, ypoint) in self.nodes_dict.keys():
+            return self.nodes_dict[(xpoint, ypoint)]
+        return None
+    
+    def getNodeFromTiles(self, row, col):
+        x, y = self.create_key(x= col, y= row)
+        if (x, y) in self.nodes_dict.keys():
+            return self.nodes_dict[(x, y)]
+        return None
+    
+    def getStartNode(self):
+        nodes = list(self.nodes_dict.values())
+        return nodes[0]
+    
+    def set_portal_node_pair(self, npair1, npair2):
+        first_key = self.create_key(*npair1)
+        second_key = self.create_key(*npair2)
         
-        nodeA.neighbors['RIGHT'] = nodeB
-        nodeA.neighbors['DOWN'] = nodeC
-        nodeB.neighbors['LEFT'] = nodeA
-        nodeB.neighbors['DOWN'] = nodeD
-        nodeC.neighbors['UP'] = nodeA
-        nodeC.neighbors['RIGHT'] = nodeD
-        nodeC.neighbors['DOWN'] = nodeF
-        nodeD.neighbors['UP'] = nodeB
-        nodeD.neighbors['LEFT'] = nodeC
-        nodeD.neighbors['RIGHT'] = nodeE
-        nodeE.neighbors['LEFT'] = nodeD
-        nodeE.neighbors['DOWN'] = nodeG
-        nodeF.neighbors['UP'] = nodeC
-        nodeF.neighbors['RIGHT'] = nodeG
-        nodeG.neighbors['UP'] = nodeE
-        nodeG.neighbors['LEFT'] = nodeF
-        
-        self.node_list = [nodeA, nodeB, nodeC, nodeD, nodeE, nodeF, nodeG]
+        #check if both points of the portal are in the dict
+        if first_key in self.nodes_dict.keys() and second_key in self.nodes_dict.keys():
+            #connect the two protals in the dictionary
+            self.nodes_dict[first_key].neighbors['PORTAL'] = self.nodes_dict[second_key]
+            self.nodes_dict[second_key].neighbors['PORTAL'] = self.nodes_dict[first_key]
         
     def draw(self):
-        for node in self.node_list:
+        for node in self.nodes_dict.values():
             node.draw()
