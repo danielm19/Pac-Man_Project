@@ -7,6 +7,7 @@ from node import Nodes
 from pellet import PelletGroup
 from ghost import Ghost
 import gamefunctions as gf
+from sound import Sound
 
 class Game:
     def __init__(self):
@@ -20,6 +21,7 @@ class Game:
         self.nodes = Nodes(self, 'maze.txt')
         self.nodes.set_portal_node_pair((0.5, 17), (27.5, 17))
         self.pellets = PelletGroup('maze.txt')
+        self.sound = Sound()
         self.pacman = Pacman(self, self.nodes.getStartNode())
         self.ghost = Ghost(self, self.nodes.getRandom_node())
         

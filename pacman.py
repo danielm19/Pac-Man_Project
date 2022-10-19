@@ -11,6 +11,7 @@ class Pacman(Character):
         self.settings = Settings()
         self.screen = game.screen
         self.color = self.settings.yellow
+        self.sound = game.sound
         
     def eat_pellets(self, pelletlist):
         for pellet in pelletlist:
@@ -49,6 +50,7 @@ class Pacman(Character):
                 self.direction = direction
             else:
                 self.targetNode = self.movetoNewNode(direction)
+                self.sound.play_ghost_sounds()
                 
             if self.targetNode == self.node:
                 self.direction = 'STOP'
