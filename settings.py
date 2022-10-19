@@ -9,18 +9,21 @@ class Settings():
         self.tileHeight = 20
         self.rows = 36
         self.cols = 28
-        self.screen_width = 565
+        self.screen_width = 570
         self.screen_height = 750
         self.black = (0, 0, 0)
         self.white = (255, 255, 255)
         self.green = (0, 215, 0)
+        self.red = (225, 5, 5)
         self.blue = (30, 145, 250)
         self.orange = (255, 145, 0)
-        self.node_color = (250, 255, 250)
-        #self.bg = pygame.transform.rotozoom(pygame.image.load('images/maze.png'), 0, 1.25)
+        self.node_color = (225, 100, 100)
+        #self.node_color = self.black
+        self.bg = pygame.transform.rotozoom(pygame.image.load('images/pacmaze.png'), 0, 2.5)
         self.portal_value = 3
         self.small_dot = 1
         self.power_dot = 2
+        self.ghost = 4
         
         
         self.yellow = (250, 250, 0)

@@ -2,6 +2,7 @@ import pygame as pg
 from settings import Settings
 from vector import Vector
 import numpy
+from random import randint
 
 
 
@@ -23,7 +24,7 @@ class Node:
             if self.neighbors[n] != None:
                 line_start = self.pos.convert_tuple()
                 line_end = self.neighbors[n].pos.convert_tuple()
-                pg.draw.line(surface= self.screen, color= self.settings.blue, start_pos= line_start, end_pos= line_end, width= 2)
+                pg.draw.line(surface= self.screen, color= self.settings.green, start_pos= line_start, end_pos= line_end, width= 2)
                 pg.draw.circle(surface= self.screen, color= self.settings.node_color, center=self.pos.convert_tuple_int(), radius= 10)
 
 class Nodes:
@@ -33,7 +34,7 @@ class Nodes:
         self.settings = Settings()
         self.nodes_dict = {} #dictionary containing all the nodes 
         self.node_symbols = ['+', 'P', 'n']
-        self.path_symbols = ['.', 'p', '-', '|']
+        self.path_symbols = ['.', '-', '|', 'p']
         maze_data = self.readMazeFile(maze)
         self.create_node_dict(maze_data)
         self.setup_horizontal_nodes(maze_data)
@@ -45,7 +46,7 @@ class Nodes:
         return numpy.loadtxt(fname= file, dtype= '<U1')
     
     #creates node dict keys are x, y pos and value will be nodes
-    def create_node_dict(self, mazedata, delta_x= 0, delta_y= 0):
+    def create_node_dict(self, mazedata, delta_x= 0.5, delta_y= 0):
         #loop through the file by rows and cols
         for row in list(range(mazedata.shape[0])):
             for col in list(range(mazedata.shape[1])):
@@ -56,7 +57,7 @@ class Nodes:
     def create_key(self, x, y):
         return x * self.settings.tileWidth, y * self.settings.tileHeight
     
-    def setup_horizontal_nodes(self, mazedata, delta_x= 0, delta_y= 0):
+    def setup_horizontal_nodes(self, mazedata, delta_x= 0.5, delta_y= 0):
         for row in list(range(mazedata.shape[0])):
             key = None
             for col in list(range(mazedata.shape[1])):
@@ -73,7 +74,7 @@ class Nodes:
                 elif mazedata[row][col] not in self.path_symbols:
                     key = None
                     
-    def setup_vertical_nodes(self, mazedata, delta_x= 0, delta_y= 0):
+    def setup_vertical_nodes(self, mazedata, delta_x= 0.5, delta_y= 0):
         # instead ofr (i, j) it will be (j, i) eaiser to connect up and down nodes
         vert_maze_data = mazedata.transpose()
         for col in list(range(vert_maze_data.shape[0])):
@@ -106,6 +107,11 @@ class Nodes:
     def getStartNode(self):
         nodes = list(self.nodes_dict.values())
         return nodes[0]
+    
+    def getRandom_node(self):
+        nodes = list(self.nodes_dict.values())
+        random_node = randint(0, len(nodes))
+        return nodes[random_node]
     
     def set_portal_node_pair(self, npair1, npair2):
         first_key = self.create_key(*npair1)

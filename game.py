@@ -4,6 +4,8 @@ from settings import Settings
 from button import Button
 from pacman import Pacman
 from node import Nodes
+from pellet import PelletGroup
+from ghost import Ghost
 import gamefunctions as gf
 
 class Game:
@@ -13,10 +15,13 @@ class Game:
         self.size = self.settings.screen_width, self.settings.screen_height
         self.screen = pg.display.set_mode(size=self.size)
         pg.display.set_caption("PAC-MAN")
+        self.dt = 2
         
         self.nodes = Nodes(self, 'maze.txt')
-        self.nodes.set_portal_node_pair((0, 17), (27, 17))
+        self.nodes.set_portal_node_pair((0.5, 17), (27.5, 17))
+        self.pellets = PelletGroup('maze.txt')
         self.pacman = Pacman(self, self.nodes.getStartNode())
+        self.ghost = Ghost(self, self.nodes.getRandom_node())
         
         
         self.play_button = Button(screen= self.screen, text= 'Play', x= self.size[0] // 2, y= self.size[1] - 100)
@@ -24,10 +29,15 @@ class Game:
     def play(self):
         while True:
          self.screen.fill(self.settings.black)
-         #self.screen.blit(self.settings.bg, (12,50))
+         self.screen.blit(self.settings.bg, (0, 30))
          self.nodes.draw()
          gf.check_events()
+         gf.check_pellets_eaten(pacman= self.pacman, pellets= self.pellets)
          self.pacman.update()
+         self.ghost.update()
+         self.ghost.draw(self.screen)
+         self.pellets.update(self.dt)
+         self.pellets.draw(self.screen)
          pg.display.flip()
          
             
