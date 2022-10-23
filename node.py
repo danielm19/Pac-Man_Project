@@ -36,6 +36,7 @@ class Nodes:
         self.node_symbols = ['+', 'P', 'n']
         self.path_symbols = ['.', '-', '|', 'p', '=']
         self.path_symbols_special = '=' 
+        self.homekey = None
         maze_data = self.readMazeFile(maze)
         self.create_node_dict(maze_data)
         self.setup_horizontal_nodes(maze_data)
@@ -94,6 +95,28 @@ class Nodes:
                 elif vert_maze_data[col][row] not in self.path_symbols:
                     key = None
                     
+    def createHomeNodes(self, xoffset= 0, yoffset= 0):
+        homedata = numpy.array([['X','X','X','+','X','X','X','X'],
+                                ['X','X','X','.','X','X','X','X'],
+                                ['X','+','X','.','X','+','X','X'],
+                                ['X','+','.','+','.','+','X','X'],
+                                ['X','+','X','X','X','+','X','X']])
+
+        self.create_node_dict(homedata, xoffset, yoffset)
+        self.setup_horizontal_nodes(homedata, xoffset, yoffset)
+        self.setup_vertical_nodes(homedata, xoffset, yoffset)
+        self.homekey = self.create_key(xoffset + 2, yoffset)
+        print(self.homekey)
+        return self.homekey
+
+    
+    def connectHomeNodes(self, homekey, otherkey, direction):     
+        key = self.create_key(*otherkey)
+        self.nodes_dict[homekey].neighbors[direction] = self.nodes_dict[key]
+        self.nodes_dict[key].neighbors[direction*-1] = self.nodes_dict[homekey]
+        print(self.nodes_dict[homekey].pos)
+        print(self.nodes_dict[key].pos)
+    
     def getNodeFromPoint(self, xpoint, ypoint):
         if (xpoint, ypoint) in self.nodes_dict.keys():
             return self.nodes_dict[(xpoint, ypoint)]

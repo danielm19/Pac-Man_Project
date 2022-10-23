@@ -20,6 +20,9 @@ class Game:
         
         self.nodes = Nodes(self, 'maze.txt')
         self.nodes.set_portal_node_pair((0.5, 17), (27.5, 17))
+        homekey = self.nodes.createHomeNodes(10.5, 14)
+        self.nodes.connectHomeNodes(homekey, (12.5,14), 'LEFT')
+        self.nodes.connectHomeNodes(homekey, (15.5,14), 'RIGHT')
         self.pellets = PelletGroup('maze.txt')
         self.sound = Sound()
         self.pacman = Pacman(self, self.nodes.getStartNode())
