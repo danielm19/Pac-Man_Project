@@ -7,6 +7,7 @@ from random import randint
 class Character:
     def __init__(self, game, node):
         self.settings = game.settings
+        self.name = None
         self.goal = None
         self.directions = {
                 'STOP': Vector(),
