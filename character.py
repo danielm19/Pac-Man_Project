@@ -6,7 +6,8 @@ from random import randint
 
 class Character:
     def __init__(self, game, node):
-        self.settings = Settings()
+        self.settings = game.settings
+        self.name = None
         self.goal = None
         self.directions = {
                 'STOP': Vector(),
@@ -43,7 +44,7 @@ class Character:
         return self.node
     
     def moved_passed_node(self):
-        if self.targetNode is not None:
+        if self.targetNode != None:
             v1 = self.targetNode.pos - self.node.pos
             v2 = self.position - self.node.pos
             node_to_target_node = v1.mag_sq()
@@ -92,7 +93,7 @@ class Character:
                 if self.node.neighbors['PORTAL'] is not None:
                     self.node = self.node.neighbors['PORTAL']
             self.targetNode = self.movetoNewNode(direction)
-            if self.targetNode is not self.node:
+            if self.targetNode != self.node:
                 self.direction = direction
             else:
                 self.targetNode = self.movetoNewNode(self.direction)

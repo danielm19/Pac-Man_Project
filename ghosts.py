@@ -7,7 +7,7 @@ import SpriteSheet
 from random import randint
 
 class Ghosts(Sprite):
-    def __init__(self, screen, color):
+    def __init__(self, screen, color, node):
         super(Ghosts, self).__init__()
         self.color = color # ghost type
         self.screen = screen
@@ -97,6 +97,7 @@ class Ghosts(Sprite):
         self.value = 0
         self.font = SysFont(None, 16, italic=True)
         self.score_image = self.font.render(str(self.value), True, (255, 255, 255), (0, 0, 0))
+        self.base = node
 
         # how long to show score
         self.frames = 0
