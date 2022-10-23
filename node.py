@@ -34,7 +34,8 @@ class Nodes:
         self.settings = Settings()
         self.nodes_dict = {} #dictionary containing all the nodes 
         self.node_symbols = ['+', 'P', 'n']
-        self.path_symbols = ['.', '-', '|', 'p']
+        self.path_symbols = ['.', '-', '|', 'p', '=']
+        self.path_symbols_special = '=' 
         maze_data = self.readMazeFile(maze)
         self.create_node_dict(maze_data)
         self.setup_horizontal_nodes(maze_data)
@@ -66,7 +67,7 @@ class Nodes:
                         key = self.create_key(x= col + delta_x, y= row + delta_y)
                     else:
                         other_key = self.create_key(x= col + delta_x, y= row + delta_y)
-                        #makes the connection between left and roght nodes on the screen
+                        #makes the connection between left and right nodes on the screen
                         self.nodes_dict[key].neighbors['RIGHT'] = self.nodes_dict[other_key]
                         self.nodes_dict[other_key].neighbors['LEFT'] = self.nodes_dict[key]
                         key = other_key
