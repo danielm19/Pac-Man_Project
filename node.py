@@ -95,17 +95,17 @@ class Nodes:
                 elif vert_maze_data[col][row] not in self.path_symbols:
                     key = None
                     
-    def createHomeNodes(self, xoffset= 0, yoffset= 0):
+    def createHomeNodes(self, delta_x= 0, delta_y= 0):
         homedata = numpy.array([['X','X','X','+','X','X','X','X'],
                                 ['X','X','X','.','X','X','X','X'],
                                 ['X','+','X','.','X','+','X','X'],
                                 ['X','+','.','+','.','+','X','X'],
                                 ['X','+','X','X','X','+','X','X']])
 
-        self.create_node_dict(homedata, xoffset, yoffset)
-        self.setup_horizontal_nodes(homedata, xoffset, yoffset)
-        self.setup_vertical_nodes(homedata, xoffset, yoffset)
-        self.homekey = self.create_key(xoffset + 2, yoffset)
+        self.create_node_dict(homedata, delta_x, delta_y)
+        self.setup_horizontal_nodes(homedata, delta_x, delta_y)
+        self.setup_vertical_nodes(homedata, delta_x, delta_y)
+        self.homekey = self.create_key(delta_x + 2, delta_y)
         print(self.homekey)
         return self.homekey
 
