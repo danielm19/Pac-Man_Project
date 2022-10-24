@@ -1,3 +1,7 @@
+#Stephanie Becerra, id: 888771284
+#Ryan Chen, id: 888611449
+#
+
 from distutils.log import error
 from io import UnsupportedOperation
 from math import sqrt

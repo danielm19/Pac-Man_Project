@@ -1,3 +1,7 @@
+#Stephanie Becerra, id: 888771284
+#Ryan Chen, id: 888611449
+#
+
 import pygame
 class Settings():
     """A class to store all settings for Alien Invasion."""

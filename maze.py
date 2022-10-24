@@ -1,3 +1,7 @@
+#Stephanie Becerra, id: 888771284
+#Ryan Chen, id: 888611449
+#
+
 import sys
 import pygame as pg 
 from node import Node
