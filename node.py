@@ -24,8 +24,8 @@ class Node:
             if self.neighbors[n] != None:
                 line_start = self.pos.convert_tuple()
                 line_end = self.neighbors[n].pos.convert_tuple()
-                pg.draw.line(surface= self.screen, color= self.settings.green, start_pos= line_start, end_pos= line_end, width= 2)
-                pg.draw.circle(surface= self.screen, color= self.settings.node_color, center=self.pos.convert_tuple_int(), radius= 10)
+                pg.draw.line(surface= self.screen, color= self.settings.black, start_pos= line_start, end_pos= line_end, width= 2)
+                pg.draw.circle(surface= self.screen, color= self.settings.black, center=self.pos.convert_tuple_int(), radius= 10)
 
 class Nodes:
     def __init__(self, game, maze):
@@ -106,7 +106,6 @@ class Nodes:
         self.setup_horizontal_nodes(homedata, delta_x, delta_y)
         self.setup_vertical_nodes(homedata, delta_x, delta_y)
         self.homekey = self.create_key(delta_x + 2, delta_y)
-        print(self.homekey)
         return self.homekey
 
     
@@ -114,8 +113,6 @@ class Nodes:
         key = self.create_key(*otherkey)
         self.nodes_dict[homekey].neighbors[direction] = self.nodes_dict[key]
         self.nodes_dict[key].neighbors[direction*-1] = self.nodes_dict[homekey]
-        print(self.nodes_dict[homekey].pos)
-        print(self.nodes_dict[key].pos)
     
     def getNodeFromPoint(self, xpoint, ypoint):
         if (xpoint, ypoint) in self.nodes_dict.keys():

@@ -17,6 +17,7 @@ class Settings():
         self.red = (225, 5, 5)
         self.blue = (30, 145, 250)
         self.orange = (255, 145, 0)
+        self.pink = (250, 100, 150)
         self.node_color = (225, 100, 100)
         #self.node_color = self.black
         self.bg = pygame.transform.rotozoom(pygame.image.load('images/pacmaze.png'), 0, 2.5)
