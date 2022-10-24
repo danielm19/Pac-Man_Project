@@ -20,7 +20,6 @@ class Character:
         self.radius = 12
         self.collide_radius = 4
         self.position = Vector()
-        self.color = self.settings.blue
         self.node = node
         self.set_pos()
         self.targetNode = node
@@ -100,6 +99,6 @@ class Character:
 
             self.set_pos()
         
-    def draw(self, screen):
+    def draw(self, screen, color):
         pos = self.position.convert_tuple_int()
-        pg.draw.circle(screen, self.color, pos, self.radius)
+        pg.draw.circle(screen, color, pos, self.radius)

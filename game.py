@@ -20,14 +20,16 @@ class Game:
         
         self.nodes = Nodes(self, 'maze.txt')
         self.nodes.set_portal_node_pair((0.5, 17), (27.5, 17))
-        homekey = self.nodes.createHomeNodes(10.5, 14)
+        homekey = self.nodes.createHomeNodes(11.5, 14)
         self.nodes.connectHomeNodes(homekey, (12.5,14), 'LEFT')
         self.nodes.connectHomeNodes(homekey, (15.5,14), 'RIGHT')
         self.pellets = PelletGroup('maze.txt')
         self.sound = Sound()
         self.pacman = Pacman(self, self.nodes.getStartNode())
-        self.ghost = Ghost(self, self.nodes.getRandom_node())
-        
+        self.blinky = Ghost(self, self.nodes.getRandom_node())
+        self.pinky = Ghost(self, self.nodes.getRandom_node())
+        self.clyde = Ghost(self, self.nodes.getRandom_node())
+        self.inky = Ghost(self, self.nodes.getRandom_node())
         
         self.play_button = Button(screen= self.screen, text= 'Play', x= self.size[0] // 2, y= self.size[1] - 100)
         
@@ -39,15 +41,24 @@ class Game:
          gf.check_events()
          gf.check_pellets_eaten(pacman= self.pacman, pellets= self.pellets)
          self.pacman.update()
-         self.ghost.update()
-         self.ghost.draw(self.screen)
-         self.pellets.update(self.dt)
-         self.pellets.draw(self.screen)
+         self.blinky.update()
+         self.pinky.update()
+         self.clyde.update()
+         self.inky.update()
+         self.pellets.update(self.dt) 
+         self.draw()
          pg.display.flip()
          
             
     def reset(self):
         pass
+    
+    def draw(self):
+        self.blinky.draw(self.screen, self.settings.red)
+        self.pinky.draw(self.screen, self.settings.pink)
+        self.inky.draw(self.screen, self.settings.blue)
+        self.clyde.draw(self.screen, self.settings.orange)
+        self.pellets.draw(self.screen)
         
         
     def start_screen(self):
