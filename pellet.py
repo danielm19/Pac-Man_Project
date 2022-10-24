@@ -1,3 +1,7 @@
+#Stephanie Becerra, id: 888771284
+#Ryan Chen, id: 888611449
+#Daniel Moran, id: 888769718
+
 import pygame
 from vector import Vector
 from settings import Settings
