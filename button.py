@@ -1,6 +1,6 @@
 #Stephanie Becerra, id: 888771284
 #Ryan Chen, id: 888611449
-#
+#Daniel Moran, id: 888769718
 
 import pygame as pg
 from settings import Settings
